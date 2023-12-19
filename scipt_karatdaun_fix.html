@@ -62,6 +62,7 @@
       "esri/Color",
       "esri/renderers/UniqueValueRenderer",
       "esri/widgets/Locate",
+      "esri/widgets/LayerList",
     ], function (
       Map,
       MapView,
@@ -76,7 +77,8 @@
       FeatureLayer,
       Color,
       UniqueValueRenderer,
-      Locate
+      Locate,
+      LayerList,
     ) {
       //MAP CONFIG
 
@@ -110,7 +112,7 @@
 
       // Add the expand instance to the ui
 
-      view.ui.add(bgExpand, "bottom-right");
+      view.ui.add(bgExpand, "top-left");
 
       //LAYER CONFIG
       // const featurelayersawit = new FeatureLayer({
@@ -122,22 +124,22 @@
         type: "simple", // autocasts as new SimpleRenderer()
         symbol: {
           type: "simple-fill", // autocasts as new SimpleFillSymbol()
-          color: "#5F9EA0",
+          color: "green",
           outline: {
             // makes the outlines of all features consistently light gray
-            color: "lightgray",
+            color: "green",
             width: 0.5,
           },
         },
       };
 
       const jsonlayercobs = new GeoJSONLayer({
-        url: "https://raw.githubusercontent.com/gilanggrn/karatdaun_terbaru/main/karatdaun.geojson",
-        title: "persebaran karat daun",
+        url: "https://raw.githubusercontent.com/gilanggrn/pembuatan_webgis/main/tmbhan.geojson",
+        title: "",
         renderer: renderer2,
       });
 
-      map.add(jsonlayercobs);
+       map.add(jsonlayercobs);
       // let basemapGallery = new BasemapGallery({
       //     view: view,
       //});
@@ -145,61 +147,62 @@
       const renderer3 = {
         type: "simple", // autocasts as new SimpleRenderer()
         symbol: {
-          type: "simple-line", // autocasts as new SimpleFillSymbol()
-          color: "red",
+          type: "simple-fill", // autocasts as new SimpleFillSymbol()
+          color: "green",
           outline: {
             // makes the outlines of all features consistently light gray
-            color: "black",
-            width: 2,
+            color: "green",
+            width: 0.5,
           },
         },
       };
-      // const jsonlayerlistrik = new GeoJSONLayer({
-      //   url: "https://raw.githubusercontent.com/auudaa/webgis/main/src/jalur_listrik.geojson",
-      //   title: "Listrik",
-      //   renderer: renderer3
-      // });
-      // map.add(jsonlayerlistrik);
+       const jsonlayerlistrik = new GeoJSONLayer({
+         url: "https://raw.githubusercontent.com/gilanggrn/pembuatan_webgis/main/klas1.geojson",
+         title: "SEHAT",
+         renderer: renderer3
+       });
+       map.add(jsonlayerlistrik);
 
-      // const renderer1 = {
-      //   type: "simple", // autocasts as new SimpleRenderer()
-      //   symbol: {
-      //     type: "simple-line", // autocasts as new SimpleFillSymbol()
-      //     color: "red",
-      //     outline: {
-      //       // makes the outlines of all features consistently light gray
-      //       color: "lightgray",
-      //       width: 2,
-      //     },
-      //   },
-      // };
+       const renderer1 = {
+         type: "simple", // autocasts as new SimpleRenderer()
+         symbol: {
+           type: "simple-fill", // autocasts as new SimpleFillSymbol()
+           color: "yellow",
+          outline: {
+             // makes the outlines of all features consistently light gray
+            color: "lightgrey",
+             width: 0.5,
+           },
+         },
+      };
 
-      // const jsonlayerpipa = new GeoJSONLayer({
-      //   url: "https://raw.githubusercontent.com/auudaa/webgis/main/src/jalur_pipa.geojson",
-      //   title: "Pipa",
-      //   renderer: renderer1
-      // });
-      // map.add(jsonlayerpipa);
+       const jsonlayerpipa = new GeoJSONLayer({
+        url: "https://raw.githubusercontent.com/gilanggrn/pembuatan_webgis/main/klas2.geojson",
+        title: "RUSAK RINGAN",
+        renderer: renderer1
+      });
+      map.add(jsonlayerpipa);
 
-      // const renderer = {
-      //   type: "simple", // autocasts as new SimpleRenderer()
-      //   symbol: {
-      //     type: "simple-fill", // autocasts as new SimpleFillSymbol()
-      //     color: "#C9CC3F",
-      //     outline: {
-      //       // makes the outlines of all features consistently light gray
-      //       color: "lightgray",
-      //       width: 0.5,
-      //     },
-      //   },
-      // };
-      // const jsonlayerwell = new GeoJSONLayer({
-      //   url: "https://raw.githubusercontent.com/auudaa/webgis/main/src/sumur.geojson",
-      //   title: "Sumur",
-      //   renderer: renderer,
-      // });
+      const renderer = {
+        type: "simple", // autocasts as new SimpleRenderer()
+        symbol: {
+          type: "simple-fill", // autocasts as new SimpleFillSymbol()
+          color: "red",
+          outline: {
+            // makes the outlines of all features consistently light gray
+            color: "red",
+            width: 0.5,
+          }//,
+        },
+      };
+      
+      const jsonlayerwell = new GeoJSONLayer({
+        url: "https://raw.githubusercontent.com/gilanggrn/pembuatan_webgis/main/klas3.geojson",
+        title: "RUSAK SEDANG",
+        renderer: renderer,
+      });
 
-      // map.add(jsonlayerwell);
+      map.add(jsonlayerwell);
 
       // const jsonlayerwell_location = new GeoJSONLayer({
       //   url: "https://raw.githubusercontent.com/auudaa/webgis/main/src/well_location.geojson",
@@ -218,7 +221,7 @@
         view: view,
       });
       view.ui.add(searchWidget, {
-        position: "bottom-right",
+        position: "top-right",
       });
 
       //Kompas
@@ -236,9 +239,10 @@
           style: "card", // other styles include 'classic'
         }),
         view: view,
-        expanded: false,
+        expanded: true,
       });
       view.ui.add(legend, "bottom-left");
+      
 
       //Skala
       const scaleBar = new ScaleBar({
@@ -246,9 +250,19 @@
         unit: "dual", // The scale bar displays both metric and non-metric units.
       });
       view.ui.add(scaleBar, {
-        position: "bottom-left",
+        position: "top-left",
       });
-      
+      const ccWidget = new CoordinateConversion({
+          view: view
+        });
+
+        view.ui.add(ccWidget, "top-right");
+      });
+
+
+
+
+
       // const locatebtn = new Locate({
       //   view: view
       // });
@@ -280,7 +294,7 @@
       //   })
       // });
       // view.ui.add(locateWidget, "bottom-right");
-    });
+
 
   </script>
 </head>
@@ -292,8 +306,9 @@
        src="https://github.com/auudaa/webgis/blob/c007f551e413e427737313b980757a6104bced23/src/logo%20aria%20png.png?raw=true"
        src="https://github.com/gilanggrn/karatdaun_terbaru/blob/main/logo%20ITP.png"
       style="width: 4cm; height: 1cm" />
-    <div id="titleText" style="color: rgba(0, 0, 0, 0.864)">Persebaran Karat Daun</div>
+    <div id="titleText" style="color: rgba(0, 0, 0, 0.864)">Peta Persebaran Karat Daun</div>
     <div style="color: rgb(0, 0, 0)">Kec.Simpang Pematang, Kab.Mesuji, Provinsi Lampung</div>
+    <!-- <div style="color: rgb(0, 0, 0)">Kec.Simpang Pematang, Kab.Mesuji, Provinsi Lampung</div> --> 
   </div>
 </body>
 
